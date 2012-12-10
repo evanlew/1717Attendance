@@ -1,0 +1,103 @@
+<html>
+<head>
+	<title>1717 Attendance</title>
+	<style>
+		body {
+			padding: 0;
+			margin: 0;
+			font-family: "Century Gothic";
+		}
+
+		h1 {
+			font-size: 80px;
+			padding: 0;
+			margin: 0;
+			text-align: center;
+			font-weight: normal;
+		}
+
+		h3 {
+			text-align: center;
+			padding: 0;
+			margin: 10px;
+			font-weight: normal;
+		}
+
+		.grey {
+			opacity: .4;
+		}
+
+		.students_container {
+			width: 100%;
+			background: #eee;
+
+			border-top: 1px solid #ccc;
+
+			margin-top: 20px;
+
+			-webkit-touch-callout: none;
+			-webkit-user-select: none;
+			-khtml-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+		}
+
+		.students_container > .student {
+			
+			display: inline-block;
+			background: #fff;
+			margin: 19px 0 0 19px ;
+			padding: 1.3em;
+
+			text-align: center;
+			font-size: 28px;
+
+			box-shadow: 0 0 2px 2px #bbb;
+
+		}
+
+	</style>
+</head>
+<body>
+	<h1><b>1717</b> Attendance</h1>
+	<h3>
+		<b>Students Present:&nbsp;</b><span class="head_count">0</span>
+		<!-- <b>Date:&nbsp;</b><span class="date"></span> -->
+	</h3>
+	<div class="students_container">
+		<!-- students to get inserted here pragmatically from names.js-->
+	</div>
+
+
+
+
+</body>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="names.js"></script>
+<script>
+	// var d = new Date();
+	// $("h3 > .date").text(d.format("d mmmm yyyy"));
+	
+	var head_count = 0;
+
+	var student_html = [];
+	 $.each(student_names, function() {
+		student_html.push(
+			$("<p>", {class: "student", text: this})
+		);
+	 });
+
+	$(".students_container").append(student_html);
+
+	//Listen for click
+	$(".student").click(function(e) {
+		$(e.target).insertAfter(".students_container > .student:last-child")
+				   .addClass("grey");
+
+		$("h3 .head_count").text(++head_count);
+
+	})
+
+</script>
+</html>

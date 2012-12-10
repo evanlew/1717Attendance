@@ -34,6 +34,7 @@
 			border-top: 1px solid #ccc;
 
 			margin-top: 20px;
+			padding-bottom: 20px;
 
 			-webkit-touch-callout: none;
 			-webkit-user-select: none;
@@ -76,12 +77,11 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script src="names.js"></script>
 <script>
-	// var d = new Date();
-	// $("h3 > .date").text(d.format("d mmmm yyyy"));
+	
 	
 	var head_count = 0;
-
 	var student_html = [];
+
 	 $.each(student_names, function() {
 		student_html.push(
 			$("<p>", {class: "student", text: this})
@@ -92,6 +92,9 @@
 
 	//Listen for click
 	$(".student").click(function(e) {
+		if($(e.target).hasClass("grey"))
+			return;
+		
 		$(e.target).insertAfter(".students_container > .student:last-child")
 				   .addClass("grey");
 

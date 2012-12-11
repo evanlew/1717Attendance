@@ -92,11 +92,17 @@
 
 	//Listen for click
 	$(".student").click(function(e) {
-		if($(e.target).hasClass("grey"))
+		var $target = $(e.target);
+
+		if($target.hasClass("grey"))
 			return;
 		
-		$(e.target).insertAfter(".students_container > .student:last-child")
-				   .addClass("grey");
+		if ($target.is(":last-child")) {
+			$target.addClass("grey");
+		} else {
+			$target.insertAfter(".students_container > .student:last-child")
+					   .addClass("grey");
+		}
 
 		$("h3 .head_count").text(++head_count);
 

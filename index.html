@@ -58,6 +58,22 @@
 
 		}
 
+
+
+
+		.search {
+			position: relative;
+		}
+
+		.search input {
+			position: absolute;
+		}
+
+		.search p.overlay {
+			position: absolute;
+			margin: 0px;
+		}
+
 	</style>
 </head>
 <body>
@@ -70,6 +86,12 @@
 		<!-- students to get inserted here pragmatically from names.js-->
 	</div>
 
+	<div class="search">
+		<input type="text" />
+		<p class="overlay"></p>
+	</div>
+
+
 
 
 
@@ -77,7 +99,18 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script src="names.js"></script>
 <script>
+
 	
+	$(".search input").focus(function() {
+		$(this).keyup(function() {
+			$(".search p.overlay").text( this.value );
+		});
+	});
+
+
+
+
+
 	
 	var head_count = 0;
 	var student_html = [];

@@ -94,17 +94,27 @@
 	$(".student").click(function(e) {
 		var $target = $(e.target);
 
-		if($target.hasClass("grey"))
-			return;
-		
-		if ($target.is(":last-child")) {
-			$target.addClass("grey");
+		if($target.hasClass("grey")) {
+			//Undo the grey out
+			$target.removeClass("grey")
+				   .insertBefore(".students_container > .student:first-child");
+			$("h3 .head_count").text(--head_count);
 		} else {
-			$target.insertAfter(".students_container > .student:last-child")
-					   .addClass("grey");
-		}
+			//grey it out
 
-		$("h3 .head_count").text(++head_count);
+			//last element shouldn't be moved
+			if ($target.is(":last-child")) {
+				$target.addClass("grey");
+			} else {
+				$target.insertAfter(".students_container > .student:last-child")
+						   .addClass("grey");
+			}
+
+			$("h3 .head_count").text(++head_count);
+		}
+			
+		
+		
 
 	})
 

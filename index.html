@@ -113,10 +113,19 @@
 <script src="names.js"></script>
 <script>
 
-	Array.prototype.partialMatch = function(partial) {
+	Array.prototype.partialMatch = function(partial, matchNumber) {
+
+		matchNumber = matchNumber || 0;
+		var currentNumber = 0;
+
 		for(var i = 0; i < this.length; i++) {
 			if (this[i].toLowerCase().search(partial.toLowerCase()) == 0) {
-				return this[i];	
+				if(currentNumber === matchNumber) {
+					return this[i];	
+				} else {
+					currentNumber++;
+				}
+				
 			}
 		}
 	}
@@ -161,6 +170,10 @@
 
 			var match = student_names.partialMatch(this.value);
 
+			if(e.keyCode === 40) {
+				match = student_names.partialMatch(this.value, 1);
+			}
+
 			//makes sure the field isn't empty and there is a match
 			if(this.value != "" && match) {
 
@@ -183,6 +196,7 @@
 				}
 
 			} 
+
 			//if there's nothing, clear the field
 			else {
 				$(".search p.overlay").text("");
@@ -209,9 +223,17 @@
 	$(".student").click(function(e) {
 
 		if($(e.target).hasClass("grey")) {
-			uncheckOffStudent(e.target)
+			uncheckOffStudent(e.target);
+
+			//focus on the textfield
+			$(".search input").focus();
+
 		} else {
 			checkStudentOff(e.target);
+
+			//focus on the textfield
+			$(".search input").focus();
+
 		}
 	})
 

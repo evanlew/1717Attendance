@@ -98,7 +98,6 @@
 	<h1><b>1717</b> Attendance</h1>
 	<h3>
 		<b>Students Present:&nbsp;</b><span class="head_count">0</span>
-		<!-- <b>Date:&nbsp;</b><span class="date"></span> -->
 	</h3>
 
 	<div class="search" id="search">
@@ -109,13 +108,6 @@
 	<div class="students_container">
 		<!-- students to get inserted here pragmatically from names.js-->
 	</div>
-
-	
-
-
-
-
-
 </body>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script src="names.js"></script>
@@ -178,10 +170,10 @@
 						//clear the field
 						$(".search p.overlay").text("");
 						$(".search input").val("");
+
+						return;
 					}
-				})
-
-
+				});
 			}
 
 			//makes sure the field isn't empty and there is a match
@@ -200,13 +192,14 @@
 
 	
 
-
-	 $.each(student_names, function() {
+	//generate student names p tag
+	$.each(student_names, function() {
 		student_html.push(
 			$("<p>", {class: "student", text: this})
 		);
-	 });
+	});
 
+	//insert the block
 	$(".students_container").append(student_html);
 
 	//Listen for click

@@ -161,26 +161,26 @@
 
 			var match = student_names.partialMatch(this.value);
 
-			//if enter key, remove the person
-			if(e.keyCode === 13) {
-				$.each($(".student"), function() {
-					if($(this).text() === match) {
-						checkStudentOff(this);
-
-						//clear the field
-						$(".search p.overlay").text("");
-						$(".search input").val("");
-
-						return;
-					}
-				});
-			}
-
 			//makes sure the field isn't empty and there is a match
 			if(this.value != "" && match) {
 
 				//update the input box with autocomplete
 				$(".search p.overlay").text(match.toLowerCase());
+
+				//if enter key, remove the person
+				if(e.keyCode === 13) {
+					$.each($(".student"), function() {
+						if($(this).text() === match) {
+							checkStudentOff(this);
+
+							//clear the field
+							$(".search p.overlay").text("");
+							$(".search input").val("");
+
+							return;
+						}
+					});
+				}
 
 			} 
 			//if there's nothing, clear the field

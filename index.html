@@ -2,6 +2,7 @@
 <head>
 	<title>1717 Attendance</title>
 	<style>
+		* { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
 		body {
 			padding: 0;
 			margin: 0;
@@ -33,7 +34,6 @@
 
 			border-top: 1px solid #ccc;
 
-			margin-top: 20px;
 			padding-bottom: 20px;
 
 			-webkit-touch-callout: none;
@@ -58,6 +58,40 @@
 
 		}
 
+
+
+
+		.search {
+			position: relative;
+			width: 100%;
+			height: 50px;
+			background: yellow;
+			font-size: 24px;
+
+		}
+
+		.search input {
+			position: absolute;
+			font-size: inherit;
+			font-family: "Century Gothic";
+			outline: none;
+			height: inherit;
+			width: inherit;
+			padding: 10px;
+			
+		}
+
+		.search p.overlay {
+			position: absolute;
+			font-size: inherit;
+			margin: 0px;
+			top: 10px;
+			left: 11px;
+			width: 100%;
+			opacity: .5;
+
+		}
+
 	</style>
 </head>
 <body>
@@ -66,9 +100,18 @@
 		<b>Students Present:&nbsp;</b><span class="head_count">0</span>
 		<!-- <b>Date:&nbsp;</b><span class="date"></span> -->
 	</h3>
+
+	<div class="search" id="search">
+		<input type="text" />
+		<p class="overlay"></p>
+	</div>
+
 	<div class="students_container">
 		<!-- students to get inserted here pragmatically from names.js-->
 	</div>
+
+	
+
 
 
 
@@ -77,10 +120,86 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script src="names.js"></script>
 <script>
-	
-	
+
+	Array.prototype.partialMatch = function(partial) {
+		for(var i = 0; i < this.length; i++) {
+			if (this[i].toLowerCase().search(partial.toLowerCase()) == 0) {
+				return this[i];	
+			}
+		}
+	}
+
+
 	var head_count = 0;
 	var student_html = [];
+
+	function checkStudentOff(student_element) {
+		var $student_element = $(student_element);
+
+		if($student_element.hasClass("grey"))
+			return;
+		
+		if ($student_element.is(":last-child")) {
+			$student_element.addClass("grey");
+		} else {
+			$student_element.insertAfter(".students_container > .student:last-child")
+					 		.addClass("grey");
+		}
+
+		$("h3 .head_count").text(++head_count);
+	}
+
+	function uncheckOffStudent(student_element) {
+		var $student_element = $(student_element);
+		
+		if ($student_element.is(":first-child")) {
+			$student_element.removeClass("grey");
+		} else {
+			$student_element.insertBefore(".students_container > .student:first-child")
+					 		.removeClass("grey");
+		}
+
+		$("h3 .head_count").text(--head_count);
+	}
+
+
+	//autocomplete logic...
+	$(".search input").focus(function() {
+		$(this).keyup(function(e) {
+
+			var match = student_names.partialMatch(this.value);
+
+			//if enter key, remove the person
+			if(e.keyCode === 13) {
+				$.each($(".student"), function() {
+					if($(this).text() === match) {
+						checkStudentOff(this);
+
+						//clear the field
+						$(".search p.overlay").text("");
+						$(".search input").val("");
+					}
+				})
+
+
+			}
+
+			//makes sure the field isn't empty and there is a match
+			if(this.value != "" && match) {
+
+				//update the input box with autocomplete
+				$(".search p.overlay").text(match.toLowerCase());
+
+			} 
+			//if there's nothing, clear the field
+			else {
+				$(".search p.overlay").text("");
+			}
+		});
+	});
+
+	
+
 
 	 $.each(student_names, function() {
 		student_html.push(
@@ -92,31 +211,14 @@
 
 	//Listen for click
 	$(".student").click(function(e) {
-		var $target = $(e.target);
 
-		if($target.hasClass("grey")) {
-			//Undo the grey out
-			$target.removeClass("grey")
-				   .insertBefore(".students_container > .student:first-child");
-			$("h3 .head_count").text(--head_count);
+		if($(e.target).hasClass("grey")) {
+			uncheckOffStudent(e.target)
 		} else {
-			//grey it out
-
-			//last element shouldn't be moved
-			if ($target.is(":last-child")) {
-				$target.addClass("grey");
-			} else {
-				$target.insertAfter(".students_container > .student:last-child")
-						   .addClass("grey");
-			}
-
-			$("h3 .head_count").text(++head_count);
+			checkStudentOff(e.target);
 		}
-			
-		
-		
-
 	})
 
 </script>
+
 </html>
